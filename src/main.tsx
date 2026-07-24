@@ -6,6 +6,7 @@ import { domains } from "./data";
 import "./styles.css";
 import "./domain-styles.css";
 import "./istinar-brand.css";
+import "./line-polish.css";
 
 type View = "public" | "login" | "request" | "app" | "domain";
 

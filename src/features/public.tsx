@@ -84,16 +84,6 @@ export function PublicSite({
             صلاحيات مؤسسية
           </div>
         </div>
-        <div className="hero-diagram">
-          <div className="diagram-core">
-            <small>ESTNAR</small>
-            <strong>قرار</strong>
-            <span>مدعوم بالبيانات</span>
-          </div>
-          <i className="diagram-node node-data">بيانات</i>
-          <i className="diagram-node node-place">موقع</i>
-          <i className="diagram-node node-impact">أثر</i>
-        </div>
       </section>
       <section id="about" className="public-section intro-section">
         <div className="intro-copy">
@@ -140,7 +130,10 @@ export function PublicSite({
               className="public-domain-card"
               key={domain.id}
               href={`/domains/${domain.id === "business" ? "business-investment" : domain.id === "quality" ? "quality-of-life" : domain.id === "health" ? "health-care" : domain.id === "tourism" ? "tourism-events" : "urban-planning"}`}
-              onClick={(event) => { event.preventDefault(); onDomain(domain.id); }}
+              onClick={(event) => {
+                event.preventDefault();
+                onDomain(domain.id);
+              }}
               style={{ "--accent": domain.accent } as React.CSSProperties}
             >
               <span className="public-domain-icon">
