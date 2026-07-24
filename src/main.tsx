@@ -5,6 +5,7 @@ import { DomainUserShell, PlatformShell } from "./features/platform";
 import { domains } from "./data";
 import "./styles.css";
 import "./domain-styles.css";
+import "./istinar-brand.css";
 
 type View = "public" | "login" | "request" | "app" | "domain";
 
