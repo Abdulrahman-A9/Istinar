@@ -1669,6 +1669,8 @@ function DomainPlatformPage({
 }) {
   const copy = domainHomeCopy[domain.id] || domainHomeCopy.business;
   const [activeService, setActiveService] = useState(0);
+  const [workspaceTab, setWorkspaceTab] = useState("explore");
+  const branch = domainBranches[domain.id] || domainBranches.business;
   return (
     <div
       className="domain-platform"
@@ -1832,6 +1834,11 @@ function DomainPlatformPage({
             </div>
           </div>
         </div>
+        <section className="domain-workbench" id="domain-workbench">
+          <div className="domain-workbench-head"><div><span className="domain-kicker dark">مساحة العمل الكاملة</span><h2>كل أدوات {domain.short} في مكان واحد</h2><p>انتقل من الاستكشاف إلى التحليل والخريطة والتوصية والتقرير دون مغادرة النطاق.</p></div><span className="domain-demo-badge">بيانات تجريبية مترابطة</span></div>
+          <nav className="domain-workbench-tabs" aria-label="أدوات النطاق">{[["explore", branch.label], ["analysis", "التحليل"], ["map", "الخريطة"], ["recommendations", "التوصيات"], ["reports", "التقارير"]].map(([id, label]) => <button key={id} className={workspaceTab === id ? "active" : ""} onClick={() => setWorkspaceTab(id)}>{label}</button>)}</nav>
+          <div className="domain-workbench-body">{workspaceTab === "explore" && <DomainBranchPage domain={domain} branch={branch} />}{workspaceTab === "analysis" && <DomainAnalysis domain={domain} />}{workspaceTab === "map" && <DomainMap domain={domain} />}{workspaceTab === "recommendations" && <DomainRecommendations domain={domain} />}{workspaceTab === "reports" && <DomainReports domain={domain} />}</div>
+        </section>
       </section>
     </div>
   );
