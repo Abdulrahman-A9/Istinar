@@ -17,6 +17,7 @@ import {
 import {
   adminRows,
   adminSections,
+  domainEvidence,
   domains,
   executiveStats,
   platformNav,
@@ -37,7 +38,7 @@ import {
   SectionHeading,
   Status,
 } from "../components/ui";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AccountPage } from "./account";
 
 type NavTarget = string;
@@ -221,7 +222,93 @@ export function PlatformShell({
     </div>
   );
 }
-export function DomainUserShell({ domain, onBack }: { domain: DomainConfig; onBack: () => void }) { return <div className="domain-user-shell"><header className="domain-user-header"><button className="domain-back" onClick={onBack}><ArrowUpLeft size={16} /> العودة إلى استنار</button><div className="domain-user-brand"><img src="/estnar-logo.png" alt="استنار" /><div><b>استنار</b><small>مساحة المستخدم · {domain.label}</small></div></div><div className="domain-user-actions"><button aria-label="بحث"><Search size={18} /></button><button aria-label="الإشعارات"><Bell size={18} /></button><span className="domain-avatar">م</span></div></header><main><DomainPlatformPage domain={domain} onBack={onBack} /></main><footer className="domain-user-footer"><div><div className="domain-footer-brand"><img src="/estnar-logo.png" alt="استنار" /><div><h3>استنار</h3><p>ذكاء القرار المكاني، من السؤال إلى أثر قابل للقياس.</p></div></div></div><div><h3>روابط {domain.short}</h3><a href="#domain-analysis">بدء التحليل</a><a href="#services">أدوات المجال</a><a href="#reports">التقارير والنتائج</a></div><div><h3>تحتاج مساعدة؟</h3><a href="#help">مركز المساعدة</a><a href="#privacy">الخصوصية والبيانات</a><button className="domain-footer-back" onClick={onBack}>العودة إلى استنار</button></div></footer></div> }
+export function DomainUserShell({
+  domain,
+  onBack,
+  activeTab = "overview",
+  onNavigate,
+}: {
+  domain: DomainConfig;
+  onBack: () => void;
+  activeTab?: string;
+  onNavigate?: (tab: string) => void;
+}) {
+  const navigation = [
+    ["overview", "نظرة عامة"],
+    ["explore", "استكشف"],
+    ["map", "الخريطة"],
+    ["analysis", "التحليل"],
+    ["reports", "التقارير"],
+    ["saved", "المحفوظات"],
+  ];
+
+  return (
+    <div className={`domain-user-shell domain-${domain.id}`}>
+      <header className="domain-user-header">
+        <div className="domain-header-start">
+          <button className="domain-back" onClick={onBack}>
+            <ArrowUpLeft size={16} /> العودة إلى استنار
+          </button>
+          <div className="domain-user-brand">
+            <img src="/estnar-logo.png" alt="استنار" />
+            <div>
+              <b>استنار</b>
+              <small>{domain.label}</small>
+            </div>
+          </div>
+        </div>
+        <nav className="domain-user-nav" aria-label="تنقل النطاق">
+          {navigation.map(([id, label]) => (
+            <button
+              key={id}
+              className={activeTab === id ? "active" : ""}
+              aria-current={activeTab === id ? "page" : undefined}
+              onClick={() => onNavigate?.(id)}
+            >
+              {label}
+            </button>
+          ))}
+        </nav>
+        <div className="domain-user-actions">
+          <button aria-label="بحث"><Search size={18} /></button>
+          <button aria-label="الإشعارات"><Bell size={18} /></button>
+          <span className="domain-avatar" aria-label="حساب محمد">م</span>
+        </div>
+      </header>
+      <main>
+        <DomainPlatformPage
+          domain={domain}
+          onBack={onBack}
+          initialTab={activeTab}
+          onTabChange={onNavigate}
+        />
+      </main>
+      <footer className="domain-user-footer">
+        <div>
+          <div className="domain-footer-brand">
+            <img src="/estnar-logo.png" alt="استنار" />
+            <div>
+              <h3>استنار</h3>
+              <p>ذكاء القرار المكاني، من السؤال إلى أثر قابل للقياس.</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3>روابط {domain.short}</h3>
+          <button onClick={() => onNavigate?.("analysis")}>بدء التحليل</button>
+          <button onClick={() => onNavigate?.("explore")}>أدوات المجال</button>
+          <button onClick={() => onNavigate?.("reports")}>التقارير والنتائج</button>
+        </div>
+        <div>
+          <h3>تحتاج مساعدة؟</h3>
+          <a href="#domain-help">مركز المساعدة</a>
+          <a href="#privacy">الخصوصية والبيانات</a>
+          <button className="domain-footer-back" onClick={onBack}>العودة إلى استنار</button>
+        </div>
+      </footer>
+    </div>
+  );
+}
 function SidebarItem({
   item,
   active,
@@ -1002,6 +1089,7 @@ function DomainAnalysis({ domain }: { domain: DomainConfig }) {
   );
 }
 function DomainMap({ domain }: { domain: DomainConfig }) {
+  const evidence = domainEvidence[domain.id];
   return (
     <>
       <SectionHeading
@@ -1022,7 +1110,13 @@ function DomainMap({ domain }: { domain: DomainConfig }) {
             <button className="select">مقارنة المواقع</button>
           </div>
         </div>
-        <MapCanvas label={`خريطة ${domain.label}`} accent={domain.accent} />
+        <MapCanvas
+          label={`خريطة ${domain.label}`}
+          accent={domain.accent}
+          layers={evidence.layers}
+          filters={evidence.modes}
+          insight={evidence.callout}
+        />
       </div>
       <div className="map-detail-grid">
         <DetailCard
@@ -1042,6 +1136,7 @@ function DomainMap({ domain }: { domain: DomainConfig }) {
   );
 }
 function DomainRecommendations({ domain }: { domain: DomainConfig }) {
+  const evidence = domainEvidence[domain.id];
   return (
     <>
       <SectionHeading
@@ -1078,12 +1173,21 @@ function DomainRecommendations({ domain }: { domain: DomainConfig }) {
           <div className="confidence-bar">
             <i />
           </div>
-          <small>اعتمدنا على 8 مؤشرات من 10 مصادر بيانات محدثة.</small>
+          <small>{evidence.confidence}. اعتمدنا على 8 مؤشرات من 10 مصادر بيانات محدثة.</small>
           <Button variant="dark">
             شارك التوصية <ArrowIcon />
           </Button>
         </div>
       </div>
+      {domain.id === "health" && (
+        <div className="panel health-privacy-note" role="note">
+          <div className="recommendation-icon"><ShieldIcon /></div>
+          <div>
+            <strong>خصوصية البيانات وحدود الثقة</strong>
+            <p>هذه الرؤية مبنية على بيانات مجمعة وغير معرِّفة؛ لا تُعرض أي معلومات صحية فردية أو سجلات قابلة للتعرّف. تعتمد التوصية على توفر المصادر وجودتها وقد تتغير عند تحديثها.</p>
+          </div>
+        </div>
+      )}
       <div className="panel table-panel">
         <div className="panel-head">
           <div>
@@ -1192,6 +1296,41 @@ function ReportCard({
         <ArrowIcon />
       </div>
     </button>
+  );
+}
+
+function DomainSavedPage({ domain }: { domain: DomainConfig }) {
+  const saved = [
+    ["توصية الموقع الأول", domain.locations[0]?.[0] || "حي النقرة", "محدث اليوم"],
+    ["مقارنة المواقع", `${domain.locations[0]?.[0] || "حي النقرة"} · ${domain.locations[1]?.[0] || "المنتزه"}`, "منذ يومين"],
+    ["ملخص قرار تنفيذي", `تقرير ${domain.short}`, "منذ 5 أيام"],
+  ];
+
+  return (
+    <>
+      <SectionHeading eyebrow="نتائجك المحفوظة" title="قرارات جاهزة للعودة والمشاركة" action="تصفية المحفوظات" />
+      <div className="saved-grid domain-saved-grid">
+        {saved.map(([title, value, date], index) => (
+          <article className="saved-card" key={title}>
+            <div className="saved-card-top">
+              <span className="saved-type">{index === 0 ? "توصية" : index === 1 ? "مقارنة" : "تقرير"}</span>
+              <Status tone={index === 0 ? "green" : "blue"}>محفوظ</Status>
+            </div>
+            <h3>{title}</h3>
+            <p>{value}</p>
+            <small>{date} · بيانات قابلة للمراجعة</small>
+            <Button variant="text">فتح النتيجة <ArrowIcon /></Button>
+          </article>
+        ))}
+      </div>
+      <div className="panel methodology-note domain-saved-note">
+        <div className="recommendation-icon"><ShieldIcon /></div>
+        <div>
+          <h3>المحفوظات مرتبطة بالنطاق</h3>
+          <p>تظل كل نتيجة مرتبطة بالمؤشرات والمصادر التي فسّرت التوصية وقت حفظها.</p>
+        </div>
+      </div>
+    </>
   );
 }
 function AdminPage({ active }: { active: string }) {
@@ -1660,17 +1799,87 @@ const domainHomeCopy: Record<
       "امتداد طريق المدينة يحتاج إلى حزمة خدمات قبل أن يتجاوز الضغط قدرة البنية الحالية.",
   },
 };
+function DomainEvidenceSurface({ domain }: { domain: DomainConfig }) {
+  const evidence = domainEvidence[domain.id];
+  const [activeMode, setActiveMode] = useState(evidence.modes[0]);
+  const [activeLayer, setActiveLayer] = useState(evidence.layers[0]);
+
+  return (
+    <section className={`domain-evidence-surface evidence-${domain.id}`} aria-labelledby={`${domain.id}-evidence-title`}>
+      <div className="domain-evidence-header">
+        <div>
+          <span className="domain-kicker dark">دليل متخصص · {evidence.scenario}</span>
+          <h2 id={`${domain.id}-evidence-title`}>{evidence.focus}</h2>
+          <p>تبدّل العدسة لرؤية الدليل الذي يفسّر التوصية، ثم اختر الطبقة التي تريد مراجعتها على الخريطة.</p>
+        </div>
+        <div className="domain-evidence-control">
+          <span>عدسة القرار</span>
+          <div role="group" aria-label="عدسات القرار">
+            {evidence.modes.map((mode) => (
+              <button key={mode} className={activeMode === mode ? "active" : ""} aria-pressed={activeMode === mode} onClick={() => setActiveMode(mode)}>{mode}</button>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="domain-signal-grid">
+        {evidence.signals.map((signal) => (
+          <article className="domain-signal-card" key={signal.label}>
+            <span>{signal.label}</span>
+            <strong>{signal.value}</strong>
+            <small>{signal.note}</small>
+          </article>
+        ))}
+      </div>
+      <div className="domain-evidence-callout">
+        <div>
+          <span>الإشارة النشطة · {activeMode}</span>
+          <h3>{evidence.callout}</h3>
+          <p>{evidence.confidence}</p>
+        </div>
+        <div className="domain-layer-control" role="group" aria-label="طبقات الدليل">
+          <span>طبقة الخريطة</span>
+          {evidence.layers.map((layer) => (
+            <button key={layer} className={activeLayer === layer ? "active" : ""} aria-pressed={activeLayer === layer} onClick={() => setActiveLayer(layer)}>{layer}</button>
+          ))}
+          <small>نشطة الآن: {activeLayer}</small>
+        </div>
+      </div>
+      {domain.id === "health" && (
+        <div className="health-privacy-note" role="note">
+          <ShieldCheck size={18} aria-hidden="true" />
+          <p><strong>خصوصية البيانات:</strong> هذه الرؤية مبنية على بيانات مجمعة وغير معرِّفة؛ لا تُعرض أي معلومات صحية فردية أو سجلات قابلة للتعرّف. تعتمد التوصية على توفر المصادر وجودتها وقد تتغير عند تحديثها.</p>
+        </div>
+      )}
+    </section>
+  );
+}
+
 function DomainPlatformPage({
   domain,
   onBack,
+  initialTab = "overview",
+  onTabChange,
 }: {
   domain: DomainConfig;
   onBack: () => void;
+  initialTab?: string;
+  onTabChange?: (tab: string) => void;
 }) {
   const copy = domainHomeCopy[domain.id] || domainHomeCopy.business;
+  const evidence = domainEvidence[domain.id];
   const [activeService, setActiveService] = useState(0);
-  const [workspaceTab, setWorkspaceTab] = useState("explore");
+  const [workspaceTab, setWorkspaceTab] = useState(
+    initialTab === "overview" ? "explore" : initialTab,
+  );
   const branch = domainBranches[domain.id] || domainBranches.business;
+  useEffect(() => {
+    setWorkspaceTab(initialTab === "overview" ? "explore" : initialTab);
+  }, [initialTab]);
+
+  const chooseWorkspaceTab = (tab: string) => {
+    setWorkspaceTab(tab);
+    onTabChange?.(tab);
+  };
   return (
     <div
       className="domain-platform"
@@ -1684,11 +1893,12 @@ function DomainPlatformPage({
           <p>{copy.text}</p>
           <div className="domain-hero-actions">
             <Button
-              onClick={() =>
+              onClick={() => {
+                chooseWorkspaceTab("analysis");
                 document
                   .getElementById("domain-analysis")
                   ?.scrollIntoView({ behavior: "smooth" })
-              }
+              }}
             >
               ابدأ التحليل <ArrowIcon />
             </Button>
@@ -1732,6 +1942,7 @@ function DomainPlatformPage({
             </div>
           ))}
         </div>
+        <DomainEvidenceSurface domain={domain} />
         <div className="domain-split">
           <div className="domain-services-panel">
             <div className="domain-section-heading compact">
@@ -1765,19 +1976,13 @@ function DomainPlatformPage({
               </Button>
             </div>
           </div>
-          <div className="domain-map-preview">
-            <div className="map-preview-grid" />
-            <div className="preview-road road-one" />
-            <div className="preview-road road-two" />
-            <div className="preview-route" />
-            <span className="preview-pin pin-one" />
-            <span className="preview-pin pin-two" />
-            <div className="preview-card">
-              <span>إشارة مكانية</span>
-              <b>{copy.insight}</b>
-              <small>ثقة مرتفعة · محدثة اليوم</small>
-            </div>
-          </div>
+          <MapCanvas
+            label={`خريطة ${domain.label}`}
+            accent={domain.accent}
+            layers={evidence.layers}
+            filters={evidence.modes}
+            insight={evidence.callout}
+          />
         </div>
         <section id="domain-analysis" className="domain-analysis-strip">
           <div>
@@ -1836,8 +2041,8 @@ function DomainPlatformPage({
         </div>
         <section className="domain-workbench" id="domain-workbench">
           <div className="domain-workbench-head"><div><span className="domain-kicker dark">مساحة العمل الكاملة</span><h2>كل أدوات {domain.short} في مكان واحد</h2><p>انتقل من الاستكشاف إلى التحليل والخريطة والتوصية والتقرير دون مغادرة النطاق.</p></div><span className="domain-demo-badge">بيانات تجريبية مترابطة</span></div>
-          <nav className="domain-workbench-tabs" aria-label="أدوات النطاق">{[["explore", branch.label], ["analysis", "التحليل"], ["map", "الخريطة"], ["recommendations", "التوصيات"], ["reports", "التقارير"]].map(([id, label]) => <button key={id} className={workspaceTab === id ? "active" : ""} onClick={() => setWorkspaceTab(id)}>{label}</button>)}</nav>
-          <div className="domain-workbench-body">{workspaceTab === "explore" && <DomainBranchPage domain={domain} branch={branch} />}{workspaceTab === "analysis" && <DomainAnalysis domain={domain} />}{workspaceTab === "map" && <DomainMap domain={domain} />}{workspaceTab === "recommendations" && <DomainRecommendations domain={domain} />}{workspaceTab === "reports" && <DomainReports domain={domain} />}</div>
+          <nav className="domain-workbench-tabs" aria-label="أدوات النطاق">{[["explore", branch.label], ["analysis", "التحليل"], ["map", "الخريطة"], ["recommendations", "التوصيات"], ["reports", "التقارير"], ["saved", "المحفوظات"]].map(([id, label]) => <button key={id} className={workspaceTab === id ? "active" : ""} onClick={() => chooseWorkspaceTab(id)}>{label}</button>)}</nav>
+          <div className="domain-workbench-body">{workspaceTab === "explore" && <DomainBranchPage domain={domain} branch={branch} />}{workspaceTab === "analysis" && <DomainAnalysis domain={domain} />}{workspaceTab === "map" && <DomainMap domain={domain} />}{workspaceTab === "recommendations" && <DomainRecommendations domain={domain} />}{workspaceTab === "reports" && <DomainReports domain={domain} />}{workspaceTab === "saved" && <DomainSavedPage domain={domain} />}</div>
         </section>
       </section>
     </div>

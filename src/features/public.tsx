@@ -1,13 +1,12 @@
 import {
   ArrowUpLeft,
-  ChevronDown,
-  CircleHelp,
   LockKeyhole,
   Menu,
   ShieldCheck,
   Sparkles,
   Target,
 } from "lucide-react";
+import { useState } from "react";
 import { domains } from "../data";
 import { Button, Eyebrow } from "../components/ui";
 import { PhaseOneBlocks } from "./publicExtra";
@@ -21,6 +20,8 @@ export function PublicSite({
   onRequest: () => void;
   onDomain: (id: string) => void;
 }) {
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
   return (
     <div className="public-site">
       <header className="public-header">
@@ -31,11 +32,11 @@ export function PublicSite({
             <small>ذكاء القرار المكاني</small>
           </div>
         </div>
-        <nav>
-          <a href="#about">عن استنار</a>
-          <a href="#how">كيف يعمل</a>
-          <a href="#domains">النطاقات</a>
-          <a href="#governance">الحوكمة والبيانات</a>
+        <nav className={mobileNavOpen ? "open" : ""} aria-label="التنقل العام">
+          <a href="#about" onClick={() => setMobileNavOpen(false)}>عن استنار</a>
+          <a href="#how" onClick={() => setMobileNavOpen(false)}>كيف يعمل</a>
+          <a href="#domains" onClick={() => setMobileNavOpen(false)}>النطاقات</a>
+          <a href="#governance" onClick={() => setMobileNavOpen(false)}>الحوكمة والبيانات</a>
         </nav>
         <div className="public-actions">
           <Button variant="ghost" onClick={onLogin}>
@@ -44,7 +45,12 @@ export function PublicSite({
           <Button onClick={onRequest}>
             طلب الوصول <ArrowUpLeft size={16} />
           </Button>
-          <button className="mobile-menu" aria-label="القائمة">
+          <button
+            className="mobile-menu"
+            aria-label="القائمة"
+            aria-expanded={mobileNavOpen}
+            onClick={() => setMobileNavOpen((open) => !open)}
+          >
             <Menu />
           </button>
         </div>
@@ -82,6 +88,24 @@ export function PublicSite({
           <div className="trust-line">
             <ShieldCheck size={16} /> بيانات محكومة · توصيات قابلة للتفسير ·
             صلاحيات مؤسسية
+          </div>
+        </div>
+        <div className="hero-intelligence-visual" aria-label="ملخص بصري لرحلة القرار">
+          <div className="hero-visual-grid" />
+          <div className="hero-visual-orbit orbit-a" />
+          <div className="hero-visual-orbit orbit-b" />
+          <div className="hero-visual-core">
+            <small>قرار أوضح</small>
+            <strong>87</strong>
+            <span>ثقة التحليل</span>
+          </div>
+          <div className="hero-visual-node node-data">بيانات</div>
+          <div className="hero-visual-node node-place">المكان</div>
+          <div className="hero-visual-node node-impact">الأثر</div>
+          <div className="hero-visual-insight">
+            <span>إشارة مكانية</span>
+            <b>حي النقرة · فرصة قابلة للنمو</b>
+            <small>8 مؤشرات · 10 مصادر · محدث اليوم</small>
           </div>
         </div>
       </section>
@@ -214,20 +238,35 @@ export function PublicSite({
       </section>
       <PhaseOneBlocks onRequest={onRequest} />
       <footer className="public-footer">
-        <div className="brand light-brand">
-          <img className="brand-logo" src="/estnar-logo.png" alt="Estnar" />
+        <div className="public-footer-grid">
+          <div className="brand light-brand">
+            <img className="brand-logo" src="/estnar-logo.png" alt="استنار" />
+            <div>
+              <b>استنار</b>
+              <small>ذكاء القرار المكاني والقطاعي</small>
+            </div>
+          </div>
           <div>
-            <b>استنار</b>
-            <small>ذكاء القرار المكاني</small>
+            <strong>استكشف</strong>
+            <a href="#about">عن المنصة</a>
+            <a href="#domains">النطاقات</a>
+            <a href="#how">كيف يعمل</a>
+          </div>
+          <div>
+            <strong>الثقة والحوكمة</strong>
+            <a href="#governance">البيانات المسؤولة</a>
+            <a href="#contact">تواصل معنا</a>
+            <a href="#contact">طلب الوصول</a>
+          </div>
+          <div className="public-footer-note">
+            <span>بيئة عرض توضيحية</span>
+            <p>تجربة Estnar مبنية على بيانات مترابطة وقابلة للاستبدال بمصادر الجهات.</p>
           </div>
         </div>
-        <div>
-          <a href="#about">عن المنصة</a>
-          <a href="#domains">النطاقات</a>
-          <a href="#governance">الحوكمة</a>
-          <a href="#contact">تواصل معنا</a>
+        <div className="public-footer-bottom">
+          <span>© 2026 استنار · منصة الذكاء المكاني والقطاعي</span>
+          <span>مصممة للقرار القابل للتفسير</span>
         </div>
-        <span>© 2026 استنار · منصة تجريبية للعرض</span>
       </footer>
     </div>
   );
