@@ -740,7 +740,7 @@ function ProjectCard({
   return (
     <div className="project-card panel">
       <div className="project-card-head">
-        <Status tone={stage === "��� �������" ? "green" : "gold"}>
+        <Status tone={stage === "قيد التنفيذ" ? "green" : "gold"}>
           {stage}
         </Status>
         <span>{domain}</span>
@@ -748,7 +748,7 @@ function ProjectCard({
       <h3>{title}</h3>
       <div className="project-progress">
         <div>
-          <span>������</span>
+          <span>نسبة الإنجاز</span>
           <b>{progress}</b>
         </div>
         <i>
@@ -756,7 +756,7 @@ function ProjectCard({
         </i>
       </div>
       <div className="project-card-foot">
-        <span>����� �������</span>
+        <span>الأثر المتوقع</span>
         <strong>{impact}</strong>
         <ArrowIcon />
       </div>
@@ -1520,7 +1520,7 @@ function DomainBranchPage({
     </>
   );
 }
-function DomainPageV2({
+export function DomainPageV2({
   domain,
   setActive,
 }: {
@@ -1588,3 +1588,4 @@ const ArrowIcon = () => <ArrowUpLeft size={16} />;
 const SparklesIcon = () => <Sparkles size={19} />;
 const ShieldIcon = () => <ShieldCheck size={15} />;
 const TargetIcon = () => <Target size={18} />;
+export function DomainUserShell({ domain, onBack }: { domain: DomainConfig; onBack: () => void }) { return <div className="domain-user-shell"><header className="domain-user-header"><button className="domain-back" onClick={onBack}><ArrowUpLeft size={16} /> العودة إلى استنار</button><div className="domain-user-brand"><img src="/estnar-logo.png" alt="استنار" /><div><b>استنار</b><small>مساحة المستخدم · {domain.label}</small></div></div><div className="domain-user-actions"><button aria-label="بحث"><Search size={18} /></button><button aria-label="الإشعارات"><Bell size={18} /></button><span className="domain-avatar">م</span></div></header><main><DomainPageV2 domain={domain} setActive={() => onBack()} /></main></div> }
