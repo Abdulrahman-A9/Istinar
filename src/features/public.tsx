@@ -9,4 +9,3 @@ export function AuthScreen({ mode, onBack, onSuccess }: { mode: 'login' | 'reque
 
 
 
-\n
