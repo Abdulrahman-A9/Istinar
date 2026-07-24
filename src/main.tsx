@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { PublicSite, AuthScreen } from './features/public';
 import { PlatformShell } from './features/platform';
 import './styles.css';
+import './domain-styles.css';
 
 type View = 'public' | 'login' | 'request' | 'app';
 
