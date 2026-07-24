@@ -221,6 +221,7 @@ export function PlatformShell({
     </div>
   );
 }
+export function DomainUserShell({ domain, onBack }: { domain: DomainConfig; onBack: () => void }) { return <div className="domain-user-shell"><header className="domain-user-header"><button className="domain-back" onClick={onBack}><ArrowUpLeft size={16} /> العودة إلى استنار</button><div className="domain-user-brand"><img src="/estnar-logo.png" alt="استنار" /><div><b>استنار</b><small>مساحة المستخدم · {domain.label}</small></div></div><div className="domain-user-actions"><button aria-label="بحث"><Search size={18} /></button><button aria-label="الإشعارات"><Bell size={18} /></button><span className="domain-avatar">م</span></div></header><main><DomainPlatformPage domain={domain} onBack={onBack} /></main><footer className="domain-user-footer"><div><div className="domain-footer-brand"><img src="/estnar-logo.png" alt="استنار" /><div><h3>استنار</h3><p>ذكاء القرار المكاني، من السؤال إلى أثر قابل للقياس.</p></div></div></div><div><h3>روابط {domain.short}</h3><a href="#domain-analysis">بدء التحليل</a><a href="#services">أدوات المجال</a><a href="#reports">التقارير والنتائج</a></div><div><h3>تحتاج مساعدة؟</h3><a href="#help">مركز المساعدة</a><a href="#privacy">الخصوصية والبيانات</a><button className="domain-footer-back" onClick={onBack}>العودة إلى استنار</button></div></footer></div> }
 function SidebarItem({
   item,
   active,
@@ -1588,4 +1589,250 @@ const ArrowIcon = () => <ArrowUpLeft size={16} />;
 const SparklesIcon = () => <Sparkles size={19} />;
 const ShieldIcon = () => <ShieldCheck size={15} />;
 const TargetIcon = () => <Target size={18} />;
-export function DomainUserShell({ domain, onBack }: { domain: DomainConfig; onBack: () => void }) { return <div className="domain-user-shell"><header className="domain-user-header"><button className="domain-back" onClick={onBack}><ArrowUpLeft size={16} /> العودة إلى استنار</button><div className="domain-user-brand"><img src="/estnar-logo.png" alt="استنار" /><div><b>استنار</b><small>مساحة المستخدم · {domain.label}</small></div></div><div className="domain-user-actions"><button aria-label="بحث"><Search size={18} /></button><button aria-label="الإشعارات"><Bell size={18} /></button><span className="domain-avatar">م</span></div></header><main><DomainPageV2 domain={domain} setActive={() => onBack()} /></main><footer className="domain-user-footer"><div><div className="domain-footer-brand"><img src="/estnar-logo.png" alt="استنار" /><div><h3>استنار</h3><p>ذكاء القرار المكاني، من السؤال إلى أثر قابل للقياس.</p></div></div></div><div><h3>روابط {domain.short}</h3><a href="#explore">استكشاف المجال</a><a href="#analysis">بدء تحليل</a><a href="#reports">التقارير والنتائج</a></div><div><h3>تحتاج مساعدة؟</h3><a href="#help">مركز المساعدة</a><a href="#privacy">الخصوصية والبيانات</a><a href="#">العودة إلى استنار</a></div></footer></div> }
+const domainHomeCopy: Record<
+  string,
+  {
+    eyebrow: string;
+    headline: string;
+    text: string;
+    metricLabels: string[];
+    services: string[];
+    insight: string;
+  }
+> = {
+  business: {
+    eyebrow: "منصة الفرص التجارية",
+    headline: "اعرف أين تبدأ فرصتك القادمة",
+    text: "حلّل الطلب والمنافسة والوصول، وقارن المواقع قبل اتخاذ قرارك الاستثماري.",
+    metricLabels: ["فرص واعدة", "فجوة طلب", "مواقع مرشحة", "ثقة التحليل"],
+    services: ["مستكشف الفرص", "خريطة التشبع", "مقارنة المواقع"],
+    insight: "حي النقرة يجمع بين طلب متنامٍ ومنافسة أقل من المتوسط.",
+  },
+  quality: {
+    eyebrow: "منصة جودة الحياة",
+    headline: "وجّه أثر الخدمات إلى حيث الحاجة",
+    text: "حوّل فجوات التغطية إلى أولويات واضحة للمشاريع العامة، مع قياس أثر كل تدخل.",
+    metricLabels: [
+      "أحياء ذات أولوية",
+      "تغطية الخدمات",
+      "مستفيدون متوقعون",
+      "ثقة البيانات",
+    ],
+    services: ["تغطية المرافق", "ترتيب الأولويات", "مطابقة الأصول"],
+    insight:
+      "ثلاثة أحياء شمالية تحتاج إلى تدخل سريع لرفع وصول العائلات إلى الحدائق.",
+  },
+  health: {
+    eyebrow: "منصة الصحة والرعاية",
+    headline: "قرّب الرعاية من السكان",
+    text: "افهم التغطية الصحية ووقت الوصول والتخصصات الناقصة، ثم اختر الموقع الأكثر أثرًا.",
+    metricLabels: [
+      "تغطية سكانية",
+      "فجوات الرعاية",
+      "زمن الوصول",
+      "جودة البيانات",
+    ],
+    services: ["خريطة المنشآت", "تحليل التخصصات", "سهولة الوصول"],
+    insight:
+      "شرق حائل يحقق أعلى تحسن متوقع في الوصول عند إضافة مركز رعاية أولية.",
+  },
+  tourism: {
+    eyebrow: "منصة السياحة والفعاليات",
+    headline: "صمّم تجربة تبدأ من الموقع",
+    text: "قارن الوجهات والمواسم والجاهزية، وابنِ فعالية أقرب للزوار وأكثر قابلية للتنفيذ.",
+    metricLabels: [
+      "وجهات جاهزة",
+      "فرص موسمية",
+      "سعة استيعاب",
+      "جاهزية البيانات",
+    ],
+    services: ["اختيار موقع فعالية", "الفرص الموسمية", "حركة الزوار"],
+    insight:
+      "الموقع التاريخي يتقدم لفعالية الشتاء بسبب الوصول والخدمات القريبة.",
+  },
+  planning: {
+    eyebrow: "منصة التخطيط والنمو",
+    headline: "استبق ضغط نمو المدينة",
+    text: "راقب التوسع والكثافة واستخدامات الأرض، وحدد أين يجب أن يبدأ التدخل قبل ظهور الفجوة.",
+    metricLabels: ["مناطق نمو", "ضغط خدمي", "مشاريع مخططة", "ثقة النموذج"],
+    services: ["خريطة النمو", "استخدامات الأرض", "مقارنة السيناريوهات"],
+    insight:
+      "امتداد طريق المدينة يحتاج إلى حزمة خدمات قبل أن يتجاوز الضغط قدرة البنية الحالية.",
+  },
+};
+function DomainPlatformPage({
+  domain,
+  onBack,
+}: {
+  domain: DomainConfig;
+  onBack: () => void;
+}) {
+  const copy = domainHomeCopy[domain.id] || domainHomeCopy.business;
+  const [activeService, setActiveService] = useState(0);
+  return (
+    <div
+      className="domain-platform"
+      style={{ "--domain-accent": domain.accent } as React.CSSProperties}
+    >
+      <section className="domain-platform-hero">
+        <div className="domain-hero-grid" />
+        <div className="domain-platform-hero-copy">
+          <span className="domain-kicker">{copy.eyebrow} · ESTNAR</span>
+          <h1>{copy.headline}</h1>
+          <p>{copy.text}</p>
+          <div className="domain-hero-actions">
+            <Button
+              onClick={() =>
+                document
+                  .getElementById("domain-analysis")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+            >
+              ابدأ التحليل <ArrowIcon />
+            </Button>
+            <button className="domain-hero-link" onClick={onBack}>
+              كل نطاقات استنار <ArrowIcon />
+            </button>
+          </div>
+          <div className="domain-proof">
+            <span>بيانات مجمعة وقابلة للمراجعة</span>
+            <span>نتائج قابلة للتفسير</span>
+            <span>تجربة مستخدم آمنة</span>
+          </div>
+        </div>
+        <div className="domain-orbit-art">
+          <div className="orbit-ring ring-one" />
+          <div className="orbit-ring ring-two" />
+          <div className="orbit-core">
+            <span>{domain.short}</span>
+            <strong>{domain.metrics[0]?.[0] || "87"}</strong>
+            <small>درجة القرار</small>
+          </div>
+          <i className="orbit-node node-top" />
+          <i className="orbit-node node-bottom" />
+          <i className="orbit-node node-side" />
+        </div>
+      </section>
+      <section className="domain-platform-content">
+        <div className="domain-section-heading">
+          <div>
+            <span className="domain-kicker dark">لقطة القرار الآن</span>
+            <h2>مؤشرات تساعدك على التحرك</h2>
+          </div>
+          <p>رؤية مختصرة مبنية على بيانات تجريبية مترابطة لسياق حائل.</p>
+        </div>
+        <div className="domain-metric-row">
+          {domain.metrics.map((metric, index) => (
+            <div className="domain-metric" key={metric[1]}>
+              <span>{copy.metricLabels[index]}</span>
+              <strong>{metric[0]}</strong>
+              <small>{metric[2]}</small>
+            </div>
+          ))}
+        </div>
+        <div className="domain-split">
+          <div className="domain-services-panel">
+            <div className="domain-section-heading compact">
+              <div>
+                <span className="domain-kicker dark">أدوات المجال</span>
+                <h2>ابدأ من السؤال المناسب</h2>
+              </div>
+            </div>
+            <div className="domain-service-tabs">
+              {copy.services.map((service, index) => (
+                <button
+                  className={activeService === index ? "active" : ""}
+                  key={service}
+                  onClick={() => setActiveService(index)}
+                >
+                  <b>0{index + 1}</b>
+                  <span>{service}</span>
+                  <ArrowIcon />
+                </button>
+              ))}
+            </div>
+            <div className="domain-service-result">
+              <span>نتيجة متوقعة</span>
+              <h3>{copy.services[activeService]}</h3>
+              <p>
+                تحليل مركّز يختصر القرار إلى خيارات واضحة، ترتيب، أسباب، مخاطر،
+                ومستوى ثقة.
+              </p>
+              <Button variant="dark">
+                فتح الأداة <ArrowIcon />
+              </Button>
+            </div>
+          </div>
+          <div className="domain-map-preview">
+            <div className="map-preview-grid" />
+            <div className="preview-road road-one" />
+            <div className="preview-road road-two" />
+            <div className="preview-route" />
+            <span className="preview-pin pin-one" />
+            <span className="preview-pin pin-two" />
+            <div className="preview-card">
+              <span>إشارة مكانية</span>
+              <b>{copy.insight}</b>
+              <small>ثقة مرتفعة · محدثة اليوم</small>
+            </div>
+          </div>
+        </div>
+        <section id="domain-analysis" className="domain-analysis-strip">
+          <div>
+            <span className="domain-kicker">من السؤال إلى التوصية</span>
+            <h2>رحلة قرار واضحة في ثلاث خطوات</h2>
+            <p>
+              لا تحتاج إلى إعدادات معقدة. اختر هدفك، راجع الأدلة، ثم احفظ أو
+              شارك النتيجة.
+            </p>
+          </div>
+          <div className="domain-steps">
+            <div>
+              <b>01</b>
+              <strong>حدد سؤالك</strong>
+              <span>اختر القرار الذي تريد دعمه.</span>
+            </div>
+            <div>
+              <b>02</b>
+              <strong>استكشف الأدلة</strong>
+              <span>شاهد الخريطة والمؤشرات المرتبطة.</span>
+            </div>
+            <div>
+              <b>03</b>
+              <strong>اتخذ الخطوة</strong>
+              <span>قارن واحفظ التوصية التنفيذية.</span>
+            </div>
+          </div>
+        </section>
+        <div className="domain-insight-grid">
+          <div className="domain-insight-card">
+            <span>توصية استنار</span>
+            <h3>{copy.insight}</h3>
+            <p>
+              تظهر التوصية مع أسبابها وبدائلها وحدود البيانات حتى تكون قابلة
+              للمراجعة.
+            </p>
+            <Button variant="text">
+              عرض التفاصيل <ArrowIcon />
+            </Button>
+          </div>
+          <div className="domain-related-card">
+            <span className="domain-kicker dark">بيانات مرتبطة بالقرار</span>
+            <h3>طبقات قليلة، أثر أكبر</h3>
+            <div>
+              <span>
+                الوصول <i style={{ width: "84%" }} />
+              </span>
+              <span>
+                الطلب أو الحاجة <i style={{ width: "73%" }} />
+              </span>
+              <span>
+                جودة البيانات <i style={{ width: "61%" }} />
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
