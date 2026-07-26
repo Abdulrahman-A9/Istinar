@@ -6,12 +6,12 @@ export function Button({ children, variant = 'primary', onClick, type = 'button'
 export function Eyebrow({ children, dark = false }: { children: React.ReactNode; dark?: boolean }) { return <div className={`eyebrow ${dark ? 'dark' : ''}`}><span />{children}</div>; }
 export function MetricCard({ metric }: { metric: string[] }) { return <div className="metric-card"><span>{metric[1]}</span><strong>{metric[0]}</strong><small>{metric[2]}</small></div>; }
 export function SectionHeading({ eyebrow, title, action, onAction }: { eyebrow?: string; title: string; action?: string; onAction?: () => void }) { return <div className="section-heading"><div>{eyebrow && <Eyebrow dark>{eyebrow}</Eyebrow>}<h2>{title}</h2></div>{action && <Button variant="text" onClick={onAction}>{action}<ArrowUpLeft size={16} /></Button>}</div>; }
-export function Status({ children, tone = 'green' }: { children: React.ReactNode; tone?: 'green' | 'gold' | 'blue' | 'red' }) { return <span className={`status ${tone}`}><i />{children}</span>; }
+export function Status({ children, tone = 'copper' }: { children: React.ReactNode; tone?: 'copper' | 'gold' | 'taupe' | 'red' }) { return <span className={`status ${tone}`}><i />{children}</span>; }
 export function EmptyState({ title, text, action }: { title: string; text: string; action?: string }) { return <div className="empty-state"><div className="empty-icon"><Sparkles size={21} /></div><h3>{title}</h3><p>{text}</p>{action && <Button variant="dark">{action}<ArrowUpLeft size={15} /></Button>}</div>; }
-export function ChartCard({ title, subtitle, data }: { title: string; subtitle: string; data: { name: string; value: number }[] }) { return <div className="panel chart-card"><div className="panel-head"><div><h3>{title}</h3><span>{subtitle}</span></div><button className="select">آخر 6 أشهر <ChevronDown size={14} /></button></div><ResponsiveContainer width="100%" height={220}><AreaChart data={data}><defs><linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#2a8f70" stopOpacity={.28} /><stop offset="100%" stopColor="#2a8f70" stopOpacity={0} /></linearGradient></defs><XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#62776e', fontSize: 11 }} /><YAxis hide /><Tooltip /><Area type="monotone" dataKey="value" stroke="#2a8f70" strokeWidth={3} fill="url(#areaFill)" /></AreaChart></ResponsiveContainer></div>; }
+export function ChartCard({ title, subtitle, data }: { title: string; subtitle: string; data: { name: string; value: number }[] }) { return <div className="panel chart-card"><div className="panel-head"><div><h3>{title}</h3><span>{subtitle}</span></div><button className="select">آخر 6 أشهر <ChevronDown size={14} /></button></div><ResponsiveContainer width="100%" height={220}><AreaChart data={data}><defs><linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#a45b36" stopOpacity={.28} /><stop offset="100%" stopColor="#a45b36" stopOpacity={0} /></linearGradient></defs><XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#806c5d', fontSize: 11 }} /><YAxis hide /><Tooltip /><Area type="monotone" dataKey="value" stroke="#a45b36" strokeWidth={3} fill="url(#areaFill)" /></AreaChart></ResponsiveContainer></div>; }
 export function MapCanvas({
   label = 'الخريطة التحليلية',
-  accent = '#2a8f70',
+  accent = '#a45b36',
   layers = ['الطبقة الأساسية', 'المناطق المرشحة', 'الوصول'],
   filters = ['كل المناطق', 'الأولوية العالية'],
   insight = 'اختر طبقة أو مرشحاً لقراءة الإشارة المكانية.',
@@ -54,13 +54,13 @@ export function MapCanvas({
       <div className="map-boundary boundary-b" style={{ borderColor: accent }} />
       <div className="map-point point-a" style={{ background: accent }} />
       <div className="map-point point-b" style={{ background: accent }} />
-      <div className="map-point point-c" style={{ background: '#9d8c60' }} />
+      <div className="map-point point-c" style={{ background: '#b69255' }} />
       <div className="map-label label-a">منطقة أولوية</div>
       <div className="map-label label-b">فرصة ناشئة</div>
       <div className="map-legend" aria-label="مفتاح الخريطة">
         <span><i style={{ background: accent }} />مرتفع</span>
-        <span><i style={{ background: '#9d8c60' }} />متوسط</span>
-        <span><i style={{ background: '#9db5a8' }} />منخفض</span>
+        <span><i style={{ background: '#b69255' }} />متوسط</span>
+        <span><i style={{ background: '#806c5d' }} />منخفض</span>
       </div>
       <div className="map-note"><MapPinIcon />{label}</div>
       <aside className="map-insight-callout" aria-live="polite">
@@ -79,7 +79,7 @@ export function DataTable({ rows, headings = ['العنصر', 'النطاق', '�
     <p className="table-mobile-note">عرض الهاتف: كل سجل يظهر كبطاقة، وجميع الحقول متاحة دون إخفاء.</p>
     <table>
       <thead><tr>{headings.map(h => <th key={h}>{h}</th>)}</tr></thead>
-      <tbody>{rows.map((row, index) => <tr key={`${row[0]}-${index}`}>{row.map((cell, i) => <td data-label={headings[i] || 'القيمة'} key={`${cell}-${i}`}>{i === 0 ? <b>{cell}</b> : i === row.length - 1 ? <Status tone={cell.includes('مراجعة') ? 'gold' : 'green'}>{cell}</Status> : cell}</td>)}</tr>)}</tbody>
+      <tbody>{rows.map((row, index) => <tr key={`${row[0]}-${index}`}>{row.map((cell, i) => <td data-label={headings[i] || 'القيمة'} key={`${cell}-${i}`}>{i === 0 ? <b>{cell}</b> : i === row.length - 1 ? <Status tone={cell.includes('مراجعة') ? 'gold' : 'copper'}>{cell}</Status> : cell}</td>)}</tr>)}</tbody>
     </table>
   </div>;
 }

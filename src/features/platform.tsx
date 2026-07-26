@@ -468,7 +468,7 @@ function ActivityCard({
       <div>
         <Status
           tone={
-            status === "\\u0645\\u0633\\u0648\\u062f\\u0629" ? "gold" : "green"
+            status === "\\u0645\\u0633\\u0648\\u062f\\u0629" ? "gold" : "copper"
           }
         >
           {status}
@@ -530,7 +530,7 @@ function ExploreCity({ setActive }: { setActive: (id: string) => void }) {
               title="ضغط نمو"
               area="امتداد طريق المدينة"
               score="83"
-              tone="blue"
+              tone="taupe"
             />
           </div>
           <div className="panel quick-panel">
@@ -562,7 +562,7 @@ function Signal({
   title: string;
   area: string;
   score: string;
-  tone: "red" | "gold" | "blue";
+  tone: "red" | "gold" | "taupe";
 }) {
   return (
     <div className="signal">
@@ -828,7 +828,7 @@ function ProjectCard({
   return (
     <div className="project-card panel">
       <div className="project-card-head">
-        <Status tone={stage === "قيد التنفيذ" ? "green" : "gold"}>
+        <Status tone={stage === "قيد التنفيذ" ? "copper" : "gold"}>
           {stage}
         </Status>
         <span>{domain}</span>
@@ -1078,7 +1078,7 @@ function DomainAnalysis({ domain }: { domain: DomainConfig }) {
                 <small>{loc[2]}</small>
               </div>
               <strong>{loc[1]}</strong>
-              <Status tone={i === 0 ? "green" : "blue"}>
+              <Status tone={i === 0 ? "copper" : "taupe"}>
                 {i === 0 ? "الأفضل" : "بديل"}
               </Status>
             </div>
@@ -1288,7 +1288,7 @@ function ReportCard({
       <div>
         <Status
           tone={
-            status === "\\u0645\\u0633\\u0648\\u062f\\u0629" ? "gold" : "green"
+            status === "\\u0645\\u0633\\u0648\\u062f\\u0629" ? "gold" : "copper"
           }
         >
           {status}
@@ -1314,7 +1314,7 @@ function DomainSavedPage({ domain }: { domain: DomainConfig }) {
           <article className="saved-card" key={title}>
             <div className="saved-card-top">
               <span className="saved-type">{index === 0 ? "توصية" : index === 1 ? "مقارنة" : "تقرير"}</span>
-              <Status tone={index === 0 ? "green" : "blue"}>محفوظ</Status>
+              <Status tone={index === 0 ? "copper" : "taupe"}>محفوظ</Status>
             </div>
             <h3>{title}</h3>
             <p>{value}</p>
