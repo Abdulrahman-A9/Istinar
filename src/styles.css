@@ -96,6 +96,7 @@ body{background:var(--ivory);color:var(--ink)}
 .public-footer{background:#21140e;color:#d4b39a}.public-footer .brand-mark{background:#fff7ee;color:#6d3b23}.public-footer a:hover{color:#fffaf3}
 
 .auth-screen{background:#fff7ee}.auth-art h1 em{color:#e4b995}.auth-art p{color:#e5c7b2}.auth-form h1{color:#3f2114}.auth-form>p,.auth-form label,.auth-note{color:#806e61}.auth-form label a{color:#9c5d36}.auth-form input:not([type=checkbox]){background:#fffdf8;border-color:#ead9c8;color:#3f2114}.auth-form input:not([type=checkbox]):focus{border-color:#bf7447;box-shadow:0 0 0 3px #bf744724}.check-row input{accent-color:#a46138}.back-link{color:#8d6d57}
+.auth-form .btn.ghost{margin-top:14px;background:#fff7ee;border:1px solid #d6ad8e;color:#744329;box-shadow:0 5px 14px #6d3b2312;font-size:12px}.auth-form .btn.ghost:hover{background:#f8eadc;border-color:#bf7447;box-shadow:0 8px 18px #6d3b231c}.auth-form .btn.ghost:active{transform:translateY(0)}
 
 .app-shell{background:linear-gradient(135deg,#fffdf8 0%,#f8efe5 55%,#f3e7d9 100%)}
 .app-header{background:linear-gradient(90deg,#fffdf8 0%,#fff7ee 100%);border-bottom-color:var(--line)}

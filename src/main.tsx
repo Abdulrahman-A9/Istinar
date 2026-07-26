@@ -117,6 +117,7 @@ function App() {
         mode={view}
         onBack={goHome}
         onSuccess={() => navigate("/app")}
+        onAdminLogin={() => navigate("/admin")}
       />
     );
   if (view === "domain")

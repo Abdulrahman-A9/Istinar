@@ -276,10 +276,12 @@ export function AuthScreen({
   mode,
   onBack,
   onSuccess,
+  onAdminLogin,
 }: {
   mode: "login" | "request";
   onBack: () => void;
   onSuccess: () => void;
+  onAdminLogin: () => void;
 }) {
   return (
     <div className="auth-screen">
@@ -350,6 +352,12 @@ export function AuthScreen({
             {mode === "login" ? "الدخول إلى مساحة العمل" : "إرسال طلب الوصول"}{" "}
             <ArrowUpLeft size={17} />
           </Button>
+          {mode === "login" && (
+            <Button variant="ghost" onClick={onAdminLogin}>
+              دخول مباشر للوحة الإدارة
+              <ArrowUpLeft size={16} />
+            </Button>
+          )}
           <div className="auth-note">
             <ShieldCheck size={15} /> اتصال مشفّر · دخول موحّد للجهات المعتمدة
           </div>
