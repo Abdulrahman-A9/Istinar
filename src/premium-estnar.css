@@ -769,7 +769,7 @@ body { background: #fffaf2; color: #2a1911; }
   mask-image: radial-gradient(circle at 30% 42%, #000, transparent 74%);
 }
 .public-hero:after {
-  background: linear-gradient(180deg, transparent 58%, rgba(36, 19, 13, .82)), repeating-linear-gradient(125deg, transparent 0 110px, rgba(245, 216, 191, .11) 111px 112px, transparent 113px 220px);
+  background: linear-gradient(180deg, transparent 58%, rgba(36, 19, 13, .82));
 }
 .public-hero-copy { max-width: 650px; justify-self: end; direction: rtl; }
 .public-hero h1 { color: #fffaf2; text-shadow: 0 14px 34px rgba(36, 19, 13, .24); }
@@ -779,7 +779,7 @@ body { background: #fffaf2; color: #2a1911; }
 .hero-orbit,
 .hero-path,
 .hero-visual-orbit { border-color: rgba(245, 216, 191, .52); }
-.hero-path { background: repeating-linear-gradient(90deg, transparent 0 17px, rgba(245, 216, 191, .72) 18px 30px, transparent 31px 53px); }
+.hero-path { background: none; }
 .hero-path:before,
 .hero-path:after { background: #d3ae68; box-shadow: 0 0 18px 6px rgba(211, 174, 104, .45); }
 .hero-intelligence-visual {
