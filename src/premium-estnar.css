@@ -746,7 +746,7 @@ body { background: #fffaf2; color: #2a1911; }
 .public-header nav { color: #e1c0a9; }
 .public-header nav a:hover,
 .public-header nav a:focus-visible { color: #fffaf2; }
-.public-actions .btn.ghost { border-color: rgba(245, 216, 191, .44); color: #f7e8d9; }
+.public-actions .btn.ghost { border-color: rgba(245, 216, 191, .44); color: #744329; }
 .public-header .btn.primary,
 .public-hero .btn.primary { background: linear-gradient(135deg, #a45b36, #c47a4b); color: #fffaf2; border-color: #d3ae68; }
 
